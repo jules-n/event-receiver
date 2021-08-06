@@ -1,0 +1,6 @@
+tenant-id:
+  headerName: 'test'
+  by: HEADER
+  requestParamName: 'test1'
+
+device-service-url: 'http://localhost:3000/tenant'
