@@ -1,16 +1,16 @@
-package com.example.tenantrecognizer;
+package com.example.eventreceiver;
 
-import com.example.tenantrecognizer.config.TenantIdConfig;
+import com.example.eventreceiver.config.TenantIdConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(TenantIdConfig.class)
-public class TenantRecognizerApplication {
+public class EventReceiverApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TenantRecognizerApplication.class, args);
+    public static void main(String[] args) {
+		SpringApplication.run(EventReceiverApplication.class, args);
 	}
 
 }

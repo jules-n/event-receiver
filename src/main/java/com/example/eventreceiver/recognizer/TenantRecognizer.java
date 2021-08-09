@@ -1,4 +1,4 @@
-package com.example.tenantrecognizer.recognizer;
+package com.example.eventreceiver.recognizer;
 
 import org.springframework.stereotype.Service;
 

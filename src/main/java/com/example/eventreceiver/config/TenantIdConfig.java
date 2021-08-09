@@ -1,4 +1,4 @@
-package com.example.tenantrecognizer.config;
+package com.example.eventreceiver.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
