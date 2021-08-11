@@ -7,6 +7,7 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -16,13 +17,28 @@ configurations {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	//shared
+	implementation 'com.jules.ss:non-functional-lib:0.1.2'
+
+	//pub/sub
+	implementation 'org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.5.RELEASE'
+	implementation 'org.springframework.integration:spring-integration-core'
+
+	//kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	//actuator
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.3'
+
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 }
