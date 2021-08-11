@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.example'
@@ -10,39 +10,55 @@ sourceCompatibility = '11'
 targetCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
-	mavenLocal()
+    mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
 
-	//shared
-	implementation 'com.jules.ss:non-functional-lib:0.1.2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	//pub/sub
-	implementation 'org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.5.RELEASE'
-	implementation 'org.springframework.integration:spring-integration-core'
+    //shared
+    implementation 'com.jules.ss:non-functional-lib:0.1.2'
 
-	//kafka
-	implementation 'org.springframework.kafka:spring-kafka'
+    //pub/sub
+    implementation "org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.5.RELEASE"
+    implementation "org.springframework.integration:spring-integration-core"
+    implementation platform('com.google.cloud:libraries-bom:20.9.0')
+    implementation 'com.google.cloud:google-cloud-pubsub'
 
-	//actuator
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.3'
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
 
-	//lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    //gRPC
+    implementation 'io.grpc:grpc-core:1.39.0'
+    implementation 'io.grpc:grpc-protobuf:1.39.0'
+    implementation 'io.grpc:grpc-stub:1.39.0'
+    implementation 'io.grpc:grpc-netty:1.39.0'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
+    //MQTT
+    implementation "org.springframework.integration:spring-integration-mqtt:5.5.2"
+
+    //actuator
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.3'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //mongo
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
