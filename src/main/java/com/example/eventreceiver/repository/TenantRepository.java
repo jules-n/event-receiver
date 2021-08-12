@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TenantRepository extends MongoRepository<Tenant, String>, TenantExpandedQueries {
+public interface TenantRepository extends MongoRepository<Tenant, String>{
     Optional<Tenant> findByTenantId(String tenantId);
 }

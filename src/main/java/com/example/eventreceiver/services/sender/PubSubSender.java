@@ -24,9 +24,6 @@ public class PubSubSender {
     @Value("${spring.cloud.gcp.project-id}")
     private String projectId;
 
-    @Value("${spring.cloud.stream.bindings.input.destination}")
-    private String subscription;
-
     @Value("${tenant-id.attribute-key}")
     private String tenantId;
 
