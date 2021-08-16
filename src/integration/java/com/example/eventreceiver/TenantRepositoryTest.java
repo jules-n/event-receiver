@@ -1,6 +1,7 @@
 package com.example.eventreceiver;
 
 import com.example.eventreceiver.domain.Tenant;
+import com.example.eventreceiver.persistence.TenantRepository;
 import com.example.eventreceiver.persistence.TenantService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
@@ -29,16 +31,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureDataMongo
+@ActiveProfiles("integration-test")
 @Testcontainers
 @DirtiesContext
-@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
-class TenantRepositoryTest
-{
+class TenantRepositoryTest {
 	public static final String MONGO_VERSION = "4.4.4";
-	public static final String REDIS_VERSION = "6.0.1";
 
 	@Autowired
 	protected ReactiveMongoOperations mongo;
+
+	@Autowired
+	private TenantRepository tenantRepository;
 
 	@Container
 	protected static final MongoDBContainer MONGO_CONTAINER = new MongoDBContainer("mongo:" + MONGO_VERSION);
@@ -86,5 +89,12 @@ class TenantRepositoryTest
 		var foundTenant = tenantService.findByTenantId("t-1").get();
 		assertThat(foundTenant.getUrls())
 				.isEqualTo(new String[]{"bmth", "ddt", "metallica"});
+	}
+
+	@Test
+	void findTenantIdByUrl(){
+		var expected = "t-6";
+		var actual = tenantRepository.findTenantIdByUrl("audioslave");
+		assertThat(actual).isEqualTo(expected);
 	}
 }
