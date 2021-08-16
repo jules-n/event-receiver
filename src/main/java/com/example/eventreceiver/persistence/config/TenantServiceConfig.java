@@ -1,7 +1,7 @@
-package com.example.eventreceiver.repository.config;
+package com.example.eventreceiver.persistence.config;
 
-import com.example.eventreceiver.repository.MongoTenantService;
-import com.example.eventreceiver.repository.TenantService;
+import com.example.eventreceiver.persistence.MongoTenantService;
+import com.example.eventreceiver.persistence.TenantService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

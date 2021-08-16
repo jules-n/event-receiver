@@ -1,4 +1,4 @@
-package com.example.eventreceiver.services.recognizer;
+package com.example.eventreceiver.services.recognizer.tenant;
 
 import java.util.Map;
 

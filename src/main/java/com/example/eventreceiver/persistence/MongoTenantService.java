@@ -1,9 +1,8 @@
-package com.example.eventreceiver.repository;
+package com.example.eventreceiver.persistence;
 
 import com.example.eventreceiver.domain.Tenant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -21,18 +20,16 @@ public class MongoTenantService implements TenantService {
 
 
     @Override
-    public String findTenantIdByTopics(String topic) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("topics").elemMatch(new Criteria().is(topic)));
-        return mongoTemplate.find(query, Tenant.class).get(0).getTenantId();
+    public String findTenantIdByTopic(String topic) {
+        var tenant = tenantRepository.findByElemMatchInTopics(topic);
+        return tenant.getTenantId();
     }
 
     //*db.tenants.find({topics:{$elemMatch:{$eq:"url-1"}}})*//*
     @Override
-    public String findTenantIdByUrls(String url) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("urls").elemMatch(new Criteria().is(url)));
-        return mongoTemplate.find(query, Tenant.class).get(0).getTenantId();
+    public String findTenantIdByUrl(String url) {
+        var tenant = tenantRepository.findByElemMatchInUrls(url);
+        return tenant.getTenantId();
     }
 
     @Override

@@ -1,6 +1,6 @@
-/*
 
-package com.example.eventreceiver.repository;
+
+package com.example.eventreceiver.persistence;
 
 import com.example.eventreceiver.domain.Tenant;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,4 +49,4 @@ class TenantRepositoryTest
                 .isEqualTo(new String[]{"bmth", "ddt", "metallica"});
     }
 }
-*/
+

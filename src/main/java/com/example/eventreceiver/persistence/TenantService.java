@@ -1,4 +1,4 @@
-package com.example.eventreceiver.repository;
+package com.example.eventreceiver.persistence;
 
 import com.example.eventreceiver.domain.Tenant;
 import org.springframework.stereotype.Service;
@@ -8,9 +8,9 @@ import java.util.Optional;
 @Service
 public interface TenantService {
 
-    String findTenantIdByTopics(String topic);
+    String findTenantIdByTopic(String topic);
 
-    String findTenantIdByUrls(String url);
+    String findTenantIdByUrl(String url);
 
     boolean update(Tenant tenant);
 

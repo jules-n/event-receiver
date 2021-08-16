@@ -1,7 +1,7 @@
 package com.example.eventreceiver.endpoints.REST.controllers;
 
 import com.example.eventreceiver.domain.Tenant;
-import com.example.eventreceiver.repository.TenantService;
+import com.example.eventreceiver.persistence.TenantService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
