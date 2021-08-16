@@ -1,12 +1,17 @@
 tenant-id:
-  attribute-key: ${TENANT_ID_ATTRIBUTE_KEY}
+  attribute-key: ${TENANT_ID_ATTRIBUTE_KEY:tenant-id}
 
 spring:
   data:
     mongodb:
-      uri: ${URI}
-      database: ${DATABASE}
-
+      uri: ${URI:mongodb://localhost:27017}
+      database: ${DATABASE:er-test}
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: ${TOPIC:device-service}
+    gcp:
+      project-id: ${PROJECT_ID:single-system}
 server:
-  port: ${PORT}
-
+  port: ${PORT:9096}
