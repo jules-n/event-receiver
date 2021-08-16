@@ -9,27 +9,20 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
 repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.0'
 
     //shared
     implementation 'com.jules.ss:non-functional-lib:0.1.2'
 
     //pub/sub
-    implementation "org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.5.RELEASE"
-    implementation "org.springframework.integration:spring-integration-core"
     implementation platform('com.google.cloud:libraries-bom:20.9.0')
     implementation 'com.google.cloud:google-cloud-pubsub'
 
@@ -47,6 +40,8 @@ dependencies {
 
     //actuator
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.3'
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.projectlombok:lombok:1.18.18'
 
     //lombok
     compileOnly 'org.projectlombok:lombok'
@@ -55,8 +50,16 @@ dependencies {
     //mongo
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+    //tests
+    /*testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }*/
+    //testImplementation 'io.projectreactor:reactor-test'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-params'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.assertj:assertj-core'
+    //testImplementation 'org.testcontainers:junit-jupiter:1.16.0'
+    //testImplementation 'org.testcontainers:mongodb:1.16.0'
 }
 
 test {
