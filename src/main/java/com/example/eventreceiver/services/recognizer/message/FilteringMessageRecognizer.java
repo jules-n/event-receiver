@@ -1,12 +1,12 @@
 package com.example.eventreceiver.services.recognizer.message;
 
-public class SimpleMessageRecognizer implements MessageRecognizer {
+public class FilteringMessageRecognizer implements MessageRecognizer {
     @Override
-    public String getMessage(Object... args) {
+    public Object getMessage(Object... args) {
 
         for (Object request : args) {
             if(request!=null){
-                return request.toString();
+                return request;
             }
         }
 
