@@ -26,6 +26,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -94,7 +95,7 @@ class TenantRepositoryTest {
 	@Test
 	void findTenantIdByUrl(){
 		var expected = "t-6";
-		var actual = tenantRepository.findTenantIdByUrl("audioslave");
+		var actual = tenantRepository.findTenantIdByUrls("audioslave");
 		assertThat(actual).isEqualTo(expected);
 	}
 }

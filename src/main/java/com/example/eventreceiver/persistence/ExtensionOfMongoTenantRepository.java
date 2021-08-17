@@ -14,9 +14,9 @@ public class ExtensionOfMongoTenantRepository implements ExtensionOfTenantReposi
     }
 
     @Override
-    public String findTenantIdByUrl(String url) {
+    public String findTenantIdByUrls(String urls) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("urls").is(url));
+        query.addCriteria(Criteria.where("urls").is(urls));
         var id = mongoTemplate.find(query, Tenant.class).get(0).getTenantId();
         return id;
     }
