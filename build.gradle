@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.coditory.integration-test' version '1.2.3'
 }
 
 group = 'com.example'
@@ -49,19 +50,24 @@ dependencies {
 
     //mongo
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 
-    //tests
-    /*testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    // testing (junit5 + mockito + testcontainers)
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }*/
-    //testImplementation 'io.projectreactor:reactor-test'
-    //testImplementation 'org.junit.jupiter:junit-jupiter-params'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.assertj:assertj-core'
-    //testImplementation 'org.testcontainers:junit-jupiter:1.16.0'
-    //testImplementation 'org.testcontainers:mongodb:1.16.0'
+    integrationImplementation "org.testcontainers:junit-jupiter:1.15.3"
+    integrationImplementation "org.testcontainers:mongodb:1.15.3"
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
+    testLogging {
+        events = ["passed", "failed", "skipped"]
+        exceptionFormat = "full"
+    }
 }
