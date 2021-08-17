@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-public class ExtensionOfReposImpl implements ExtensionOfRepos{
+public class ExtensionOfMongoTenantRepository implements ExtensionOfTenantRepository {
 
     private MongoTemplate mongoTemplate;
 
-    public ExtensionOfReposImpl(MongoTemplate mongoTemplate){
+    public ExtensionOfMongoTenantRepository(MongoTemplate mongoTemplate){
         this.mongoTemplate = mongoTemplate;
     }
 

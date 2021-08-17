@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TenantRepository extends MongoRepository<Tenant, String>, ExtensionOfRepos{
+public interface TenantRepository extends MongoRepository<Tenant, String>, ExtensionOfTenantRepository {
     Optional<Tenant> findByTenantId(String tenantId);
 
     @Query("{urls:{$elemMatch:{$eq:?0}}}")
