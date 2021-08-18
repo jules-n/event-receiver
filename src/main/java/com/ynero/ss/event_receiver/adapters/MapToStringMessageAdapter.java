@@ -1,5 +1,6 @@
 package com.ynero.ss.event_receiver.adapters;
 
+import com.ynero.ss.event_receiver.persistence.TenantService;
 import com.ynero.ss.event_receiver.services.converters.DeviceToMessageJSONConverter;
 import dtos.DeviceDTO;
 import dtos.Event;
@@ -16,20 +17,28 @@ public class MapToStringMessageAdapter {
     @Autowired
     private DeviceToMessageJSONConverter<DeviceDTO> converter;
 
-    public String getJSONDeviceDTO(Map<String, Object> messageMap) {
-        var deviceId = UUID.fromString(messageMap.get("deviceId").toString());
+    @Autowired
+    private TenantService tenantService;
+
+    public String getJSONDeviceDTO(Map<String, Object> messageMap, String tenantId) {
+
+        var tenant = tenantService.findByTenantId(tenantId).get();
+        var deviceData = tenant.getDeviceData();
+        var deviceIdAlias = deviceData.getDeviceIdAlias();
+        var eventTypeAlias = deviceData.getEventTypeAlias();
+        var deviceId = UUID.fromString(messageMap.get(deviceIdAlias).toString());
         var eventsData = new HashMap<String, Object>();
 
         messageMap.keySet().forEach(
                 key -> {
-                    if (!key.equals("deviceId") && !key.equals("type")) {
+                    if (!key.equals(deviceIdAlias) && !key.equals(eventTypeAlias)) {
                         eventsData.put(key, messageMap.get(key));
                     }
                 }
         );
 
         Event event = Event.builder()
-                .type(messageMap.get("type").toString())
+                .type(messageMap.get(eventTypeAlias).toString())
                 .data(eventsData)
                 .build();
 
