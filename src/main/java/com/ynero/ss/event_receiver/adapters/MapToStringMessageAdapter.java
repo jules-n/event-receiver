@@ -1,8 +1,8 @@
 package com.ynero.ss.event_receiver.adapters;
 
-import com.ynero.ss.event_receiver.domain.DeviceDTO;
-import com.ynero.ss.event_receiver.domain.Event;
 import com.ynero.ss.event_receiver.services.converters.DeviceToMessageJSONConverter;
+import dtos.DeviceDTO;
+import dtos.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
