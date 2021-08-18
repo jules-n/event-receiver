@@ -40,10 +40,11 @@ public class ReceiverController {
                                       @RequestHeader(required = false) Object headerMessage)
             throws IOException, ExecutionException, InterruptedException {
         var message = messageRecognizer.getMessage(paramMessage, bodyMessage, headerMessage);
-        var deviceData = adapter.getJSONDeviceDTO((Map<String,Object>)message);
-        var answer = pubSubSender.sendToPubsub(deviceData, tenantRecognizer.getTenant(new HashMap<>() {{
+        var tenantId = tenantRecognizer.getTenant(new HashMap<>() {{
             put(PATH.URL, tenantsUrl);
-        }}));
+        }});
+        var deviceData = adapter.getJSONDeviceDTO((Map<String,Object>)message, tenantId);
+        var answer = pubSubSender.sendToPubsub(deviceData, tenantId);
         log.info(answer);
         return ResponseEntity.ok().build();
     }

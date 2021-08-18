@@ -25,10 +25,8 @@ public class TenantController {
     @PutMapping
     private ResponseEntity updateTenant(@RequestBody Tenant tenant) {
         var fountTenant = tenantRepository.findByTenantId(tenant.getTenantId());
-        if(fountTenant.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
-
-            tenantRepository.update(tenant);
-
+        if (fountTenant.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        tenantRepository.update(tenant);
 
         return new ResponseEntity(HttpStatus.OK);
     }

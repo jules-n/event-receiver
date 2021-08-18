@@ -18,12 +18,4 @@ public class Tenant {
     private String[] urls;
     @NonNull
     private DeviceData deviceData;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    private class DeviceData {
-        private String deviceIdAlias;
-        private String eventTypeAlias;
-    }
 }
