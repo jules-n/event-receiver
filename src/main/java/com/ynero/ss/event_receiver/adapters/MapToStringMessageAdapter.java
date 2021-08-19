@@ -20,7 +20,7 @@ public class MapToStringMessageAdapter {
     @Autowired
     private TenantService tenantService;
 
-    public String getJSONDeviceDTO(Map<String, Object> messageMap, String tenantId) {
+    public String adapt(Map<String, Object> messageMap, String tenantId) {
 
         var tenant = tenantService.findByTenantId(tenantId).get();
         var deviceData = tenant.getDeviceData();
