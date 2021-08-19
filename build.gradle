@@ -22,6 +22,7 @@ dependencies {
 
     //shared
     implementation 'com.jules.ss:non-functional-lib:0.1.2'
+    implementation 'com.jules.ss:converters:1.0.1'
     implementation 'com.jules.ss:common-dtos:1.0.1'
 
     //pub/sub

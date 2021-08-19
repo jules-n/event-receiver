@@ -1,9 +1,9 @@
 package com.ynero.ss.event_receiver.adapters;
 
 import com.ynero.ss.event_receiver.persistence.TenantService;
-import com.ynero.ss.event_receiver.services.converters.DeviceToMessageJSONConverter;
 import dtos.DeviceDTO;
 import dtos.Event;
+import json_converters.DTOToMessageJSONConverter;
 import dtos.Port;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class MapToStringMessageAdapter {
 
     @Autowired
-    private DeviceToMessageJSONConverter<DeviceDTO> converter;
+    private DTOToMessageJSONConverter<DeviceDTO> converter;
 
     @Autowired
     private TenantService tenantService;
