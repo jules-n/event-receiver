@@ -4,6 +4,7 @@ import com.ynero.ss.event_receiver.persistence.TenantService;
 import dtos.DeviceDTO;
 import dtos.Event;
 import json_converters.DTOToMessageJSONConverter;
+import dtos.Port;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,26 +21,31 @@ public class MapToStringMessageAdapter {
     @Autowired
     private TenantService tenantService;
 
-    public String getJSONDeviceDTO(Map<String, Object> messageMap, String tenantId) {
+    public String adapt(Map<String, Object> messageMap, String tenantId) {
 
         var tenant = tenantService.findByTenantId(tenantId).get();
         var deviceData = tenant.getDeviceData();
         var deviceIdAlias = deviceData.getDeviceIdAlias();
         var eventTypeAlias = deviceData.getEventTypeAlias();
         var deviceId = UUID.fromString(messageMap.get(deviceIdAlias).toString());
-        var eventsData = new HashMap<String, Object>();
+
+        var eventBuilder = Event.builder();
 
         messageMap.keySet().forEach(
                 key -> {
                     if (!key.equals(deviceIdAlias) && !key.equals(eventTypeAlias)) {
-                        eventsData.put(key, messageMap.get(key));
+                        eventBuilder
+                                .type(key)
+                                .value(messageMap.get(key));
                     }
                 }
         );
 
-        Event event = Event.builder()
-                .type(messageMap.get(eventTypeAlias).toString())
-                .data(eventsData)
+        var event = eventBuilder.build();
+
+        Port port = Port.builder()
+                .name(messageMap.get(eventTypeAlias).toString())
+                .data(event)
                 .build();
 
         var deviceDTO = DeviceDTO.builder()

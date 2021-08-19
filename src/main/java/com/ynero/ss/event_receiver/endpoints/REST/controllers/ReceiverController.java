@@ -43,7 +43,7 @@ public class ReceiverController {
         var tenantId = tenantRecognizer.getTenant(new HashMap<>() {{
             put(PATH.URL, tenantsUrl);
         }});
-        var deviceData = adapter.getJSONDeviceDTO((Map<String,Object>)message, tenantId);
+        var deviceData = adapter.adapt((Map<String,Object>)message, tenantId);
         var answer = pubSubSender.sendToPubsub(deviceData, tenantId);
         log.info(answer);
         return ResponseEntity.ok().build();
