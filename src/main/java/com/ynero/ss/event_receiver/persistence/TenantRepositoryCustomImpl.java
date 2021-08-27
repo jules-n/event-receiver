@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-public class ExtensionOfMongoTenantRepository implements ExtensionOfTenantRepository {
+public class TenantRepositoryCustomImpl implements TenantRepositoryCustom {
 
     private MongoTemplate mongoTemplate;
 
-    public ExtensionOfMongoTenantRepository(MongoTemplate mongoTemplate){
+    public TenantRepositoryCustomImpl(MongoTemplate mongoTemplate){
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -17,7 +17,8 @@ public class ExtensionOfMongoTenantRepository implements ExtensionOfTenantReposi
     public String findTenantIdByUrls(String urls) {
         Query query = new Query();
         query.addCriteria(Criteria.where("urls").is(urls));
-        var id = mongoTemplate.find(query, Tenant.class).get(0).getTenantId();
+        var tenant = mongoTemplate.find(query, Tenant.class).get(0);
+        var id = tenant.getTenantId();
         return id;
     }
 }

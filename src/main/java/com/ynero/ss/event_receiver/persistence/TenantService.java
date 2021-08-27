@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
 public interface TenantService {
 
     String findTenantIdByTopic(String topic);

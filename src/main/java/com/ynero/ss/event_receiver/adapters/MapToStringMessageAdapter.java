@@ -5,10 +5,10 @@ import dtos.DeviceDTO;
 import dtos.Event;
 import json_converters.DTOToMessageJSONConverter;
 import dtos.Port;
+import json_converters.DTOToMessageJSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,7 +29,8 @@ public class MapToStringMessageAdapter {
         var eventTypeAlias = deviceData.getEventTypeAlias();
         var deviceId = UUID.fromString(messageMap.get(deviceIdAlias).toString());
 
-        var eventBuilder = Event.builder();
+        var eventBuilder = Event.builder()
+                .time(null);
 
         messageMap.keySet().forEach(
                 key -> {
@@ -45,12 +46,12 @@ public class MapToStringMessageAdapter {
 
         Port port = Port.builder()
                 .name(messageMap.get(eventTypeAlias).toString())
-                .data(event)
+                .event(event)
                 .build();
 
         var deviceDTO = DeviceDTO.builder()
                 .id(deviceId)
-                .event(event)
+                .port(port)
                 .build();
 
         var convertedMessage = converter.serialize(deviceDTO);

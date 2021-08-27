@@ -2,14 +2,18 @@ package com.ynero.ss.event_receiver.persistence;
 
 import com.ynero.ss.event_receiver.domain.Tenant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+@Component
+@Primary
 public class MongoTenantService implements TenantService {
 
     @Autowired
