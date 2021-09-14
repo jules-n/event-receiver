@@ -2,9 +2,7 @@ package com.ynero.ss.event_receiver.endpoints.REST.controllers;
 
 import com.ynero.ss.event_receiver.domain.Tenant;
 import com.ynero.ss.event_receiver.persistence.TenantService;
-import com.ynero.ss.event_receiver.services.sender.KafkaSender;
 import com.ynero.ss.event_receiver.services.sender.TenantsSendingDataSender;
-import domain.TenantSendingData;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
