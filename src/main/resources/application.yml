@@ -10,6 +10,7 @@ spring:
     redis:
       host: ${REDIS_HOST:server}
       port: ${REDIS_PORT:6379}
+      timeout: 60000
   cloud:
     stream:
       bindings:
