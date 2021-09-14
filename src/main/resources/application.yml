@@ -6,6 +6,7 @@ spring:
     mongodb:
       uri: ${URI:mongodb://localhost:27017}
       database: ${DATABASE:er-test}
+      autoIndexCreation: true
   cloud:
     stream:
       bindings:
