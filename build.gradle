@@ -20,11 +20,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.0'
 
+
     //shared
     implementation 'com.jules.ss:non-functional-lib:0.1.2'
     implementation 'com.jules.ss:converters:1.0.1'
     implementation 'com.jules.ss:common-dtos:1.0.2.1'
     implementation 'com.jules.ss:converters:1.0.1'
+    implementation 'com.jules.ss:sending-lib:0.0.1'
 
     //pub/sub
     implementation platform('com.google.cloud:libraries-bom:20.9.0')

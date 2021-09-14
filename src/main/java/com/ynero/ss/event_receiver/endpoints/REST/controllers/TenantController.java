@@ -2,6 +2,7 @@ package com.ynero.ss.event_receiver.endpoints.REST.controllers;
 
 import com.ynero.ss.event_receiver.domain.Tenant;
 import com.ynero.ss.event_receiver.persistence.TenantService;
+import com.ynero.ss.event_receiver.services.sender.TenantsSendingDataSender;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,26 @@ public class TenantController {
     @Autowired
     private TenantService tenantRepository;
 
+    @Autowired
+    private TenantsSendingDataSender sender;
+
     @PostMapping
     private ResponseEntity createTenant(@RequestBody Tenant tenant) throws Exception {
-        tenantRepository.save(tenant);
+        var result = tenantRepository.save(tenant);
+        sender.send(tenant);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping
     private ResponseEntity updateTenant(@RequestBody Tenant tenant) {
         var fountTenant = tenantRepository.findByTenantId(tenant.getTenantId());
-        if (fountTenant.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        tenantRepository.update(tenant);
-
-        return new ResponseEntity(HttpStatus.OK);
+        if (!fountTenant.isEmpty()) {
+            var result = tenantRepository.update(tenant);
+            if (result) {
+                sender.send(tenant);
+                return new ResponseEntity(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

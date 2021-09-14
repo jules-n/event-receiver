@@ -6,6 +6,7 @@ spring:
     mongodb:
       uri: ${URI:mongodb://localhost:27017}
       database: ${DATABASE:er-test}
+      autoIndexCreation: true
   cloud:
     stream:
       bindings:
@@ -13,5 +14,10 @@ spring:
           destination: ${TOPIC:device-service}
     gcp:
       project-id: ${PROJECT_ID:single-system}
+  producer:
+    tenants-sending-data-topic: ${TENANTS_SENDING_DATA:tenants-sending-data}
+    bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVER:localhost:9092}
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 server:
   port: ${PORT:9096}

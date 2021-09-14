@@ -68,12 +68,12 @@ class TenantRepositoryTest {
 	void setUp() throws Exception {
 		var deviceData = new DeviceData("deviceId","type");
 		List<Tenant> tenants = new ArrayList<>() {{
-			add(new Tenant("t-1", new String[]{"the-cure", "the-doors"}, new String[]{"bmth", "ddt", "metallica"}, deviceData));
-			add(new Tenant("t-2", null, new String[]{"acdc", "gachi", "led-zeppelin"}, deviceData));
-			add(new Tenant("t-3", new String[]{"motorhead", "the-eagles"}, new String[]{"billy-talent", "joy-division", "ffdp"}, deviceData));
-			add(new Tenant("t-4", new String[]{"arctic-monkeys", "maneskin"}, null, deviceData));
-			add(new Tenant("t-5", null, null, deviceData));
-			add(new Tenant("t-6", new String[]{"scorpions"}, new String[]{"audioslave"}, deviceData));
+			add(new Tenant("t-1", new String[]{"the-cure", "the-doors"}, new String[]{"bmth", "ddt", "metallica"}, deviceData, null));
+			add(new Tenant("t-2", null, new String[]{"acdc", "gachi", "led-zeppelin"}, deviceData, null));
+			add(new Tenant("t-3", new String[]{"motorhead", "the-eagles"}, new String[]{"billy-talent", "joy-division", "ffdp"}, deviceData, null));
+			add(new Tenant("t-4", new String[]{"arctic-monkeys", "maneskin"}, null, deviceData, null));
+			add(new Tenant("t-5", null, null, deviceData, null));
+			add(new Tenant("t-6", new String[]{"scorpions"}, new String[]{"audioslave"}, deviceData, null));
 		}};
 
 		for (Tenant tenant : tenants) {
