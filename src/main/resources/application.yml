@@ -7,6 +7,9 @@ spring:
       uri: ${URI:mongodb://localhost:27017}
       database: ${DATABASE:er-test}
       autoIndexCreation: true
+    redis:
+      host: ${REDIS_HOST:server}
+      port: ${REDIS_PORT:6379}
   cloud:
     stream:
       bindings:
