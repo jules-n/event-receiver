@@ -9,19 +9,23 @@ import lombok.NonNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
+import java.util.Set;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = Tenant.COLLECTION_NAME)
-public class Tenant {
+public class Tenant implements Serializable {
     public static final String COLLECTION_NAME = "tenants";
     @Indexed(unique = true, name = "tenantId_")
     @Field(name = "tenantId")
     private String tenantId;
-    private String[] topics;
-    private String[] urls;
+    private Set<String> topics;
+    private Set<String> urls;
     @NonNull
     private DeviceData deviceData;
     @Nullable

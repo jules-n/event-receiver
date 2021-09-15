@@ -12,8 +12,8 @@ public interface TenantRepository extends MongoRepository<Tenant, String>, Tenan
     Optional<Tenant> findByTenantId(String tenantId);
 
     @Query("{urls:{$elemMatch:{$eq:?0}}}")
-    Tenant findByElemMatchInUrls(String url);
+    Optional<Tenant> findByElemMatchInUrls(String url);
 
     @Query("{topics:{$elemMatch:{$eq:?0}}}")
-    Tenant findByElemMatchInTopics(String topic);
+    Optional<Tenant> findByElemMatchInTopics(String topic);
 }

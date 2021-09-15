@@ -23,6 +23,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,12 +69,12 @@ class TenantRepositoryTest {
 	void setUp() throws Exception {
 		var deviceData = new DeviceData("deviceId","type");
 		List<Tenant> tenants = new ArrayList<>() {{
-			add(new Tenant("t-1", new String[]{"the-cure", "the-doors"}, new String[]{"bmth", "ddt", "metallica"}, deviceData, null));
-			add(new Tenant("t-2", null, new String[]{"acdc", "gachi", "led-zeppelin"}, deviceData, null));
-			add(new Tenant("t-3", new String[]{"motorhead", "the-eagles"}, new String[]{"billy-talent", "joy-division", "ffdp"}, deviceData, null));
-			add(new Tenant("t-4", new String[]{"arctic-monkeys", "maneskin"}, null, deviceData, null));
+			add(new Tenant("t-1", Set.of("the-cure", "the-doors"), Set.of("bmth", "ddt", "metallica"), deviceData, null));
+			add(new Tenant("t-2", null, Set.of("acdc", "gachi", "led-zeppelin"), deviceData, null));
+			add(new Tenant("t-3", Set.of("motorhead", "the-eagles"), Set.of("billy-talent", "joy-division", "ffdp"), deviceData, null));
+			add(new Tenant("t-4", Set.of("arctic-monkeys", "maneskin"), null, deviceData, null));
 			add(new Tenant("t-5", null, null, deviceData, null));
-			add(new Tenant("t-6", new String[]{"scorpions"}, new String[]{"audioslave"}, deviceData, null));
+			add(new Tenant("t-6", Set.of("scorpions"), Set.of("audioslave"), deviceData, null));
 		}};
 
 		for (Tenant tenant : tenants) {
@@ -86,7 +87,7 @@ class TenantRepositoryTest {
 	void findByTenantExistingId() {
 		var foundTenant = tenantService.findByTenantId("t-1").get();
 		assertThat(foundTenant.getUrls())
-				.isEqualTo(new String[]{"bmth", "ddt", "metallica"});
+				.isEqualTo(Set.of("bmth", "ddt", "metallica"));
 	}
 
 	@Test
