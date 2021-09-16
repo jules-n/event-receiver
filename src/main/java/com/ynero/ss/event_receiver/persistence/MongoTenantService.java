@@ -1,8 +1,8 @@
 package com.ynero.ss.event_receiver.persistence;
 
 import com.ynero.ss.event_receiver.domain.Tenant;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -13,7 +13,6 @@ import java.util.Optional;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Component
-@Primary
 public class MongoTenantService implements TenantService {
 
     @Autowired
@@ -26,16 +25,23 @@ public class MongoTenantService implements TenantService {
     @Override
     public String findTenantIdByTopic(String topic) {
         var tenant = tenantRepository.findByElemMatchInTopics(topic);
-        return tenant.getTenantId();
+        if (tenant.isEmpty()) {
+            return null;
+        }
+        return tenant.get().getTenantId();
     }
 
     //*db.tenants.find({topics:{$elemMatch:{$eq:"url-1"}}})*//*
     @Override
     public String findTenantIdByUrl(String url) {
         var tenant = tenantRepository.findByElemMatchInUrls(url);
-        return tenant.getTenantId();
+        if (tenant.isEmpty()) {
+            return null;
+        }
+        return tenant.get().getTenantId();
     }
 
+    @SneakyThrows
     @Override
     public boolean update(Tenant tenant) {
         var update = new Update();
@@ -46,6 +52,8 @@ public class MongoTenantService implements TenantService {
         if (tenant.getUrls() != null)
             update.set("urls", tenant.getUrls());
 
+        if(!checkUniquenessOfLinks(tenant)) throw new Exception("Not unique urls/topics");
+
         var result = mongoTemplate.updateFirst(new Query(where("tenantId").is(tenant.getTenantId())),
                 update,
                 Tenant.class);
@@ -54,7 +62,7 @@ public class MongoTenantService implements TenantService {
 
     @Override
     public Tenant save(Tenant tenant) throws Exception {
-        if (tenant.getTenantId() != null)
+        if (tenant.getTenantId() != null && checkUniquenessOfLinks(tenant))
             return tenantRepository.save(tenant);
         throw new Exception();
     }
@@ -62,5 +70,21 @@ public class MongoTenantService implements TenantService {
     @Override
     public Optional<Tenant> findByTenantId(String tenantId) {
         return tenantRepository.findByTenantId(tenantId);
+    }
+
+    private boolean checkUniquenessOfLinks(Tenant tenant) {
+        for (var topic : tenant.getTopics()) {
+            var existingTenant = findTenantIdByTopic(topic);
+            if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
+                return false;
+            }
+        }
+        for (var url : tenant.getUrls()) {
+            var existingTenant = findTenantIdByUrl(url);
+            if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

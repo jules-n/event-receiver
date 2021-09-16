@@ -20,8 +20,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.0'
 
-    //lettuce
-    implementation'io.lettuce:lettuce-core:6.1.4.RELEASE'
+    //lettuce+redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.5.4'
+    implementation 'io.lettuce:lettuce-core:6.1.4.RELEASE'
 
     //shared
     implementation 'com.jules.ss:non-functional-lib:0.1.2'
