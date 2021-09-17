@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import services.CacheService;
+import services.SimpleRedisCacheServiceImpl;
 
 @Configuration
 public class LettuceConfig {
@@ -24,5 +26,10 @@ public class LettuceConfig {
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
         return new LettuceConnectionFactory();
+    }
+
+    @Bean
+    public CacheService cacheService(){
+        return new SimpleRedisCacheServiceImpl(redisTemplate());
     }
 }
