@@ -22,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,67 +34,74 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @DirtiesContext
 class TenantRepositoryTest {
-	public static final String MONGO_VERSION = "4.4.4";
+    public static final String MONGO_VERSION = "4.4.4";
 
-	@Autowired
-	protected ReactiveMongoOperations mongo;
+    @Autowired
+    protected ReactiveMongoOperations mongo;
 
-	@Autowired
-	private TenantRepository tenantRepository;
+    @Autowired
+    private TenantRepository tenantRepository;
 
-	@Container
-	protected static final MongoDBContainer MONGO_CONTAINER = new MongoDBContainer("mongo:" + MONGO_VERSION);
+    @Container
+    protected static final MongoDBContainer MONGO_CONTAINER = new MongoDBContainer("mongo:" + MONGO_VERSION);
 
-	@DynamicPropertySource
-	protected static void mongoProperties(DynamicPropertyRegistry reg) {
-		reg.add("spring.data.mongodb.uri", () -> {
-			return MONGO_CONTAINER.getReplicaSetUrl();
-		});
-	}
+    @DynamicPropertySource
+    protected static void mongoProperties(DynamicPropertyRegistry reg) {
+        reg.add("spring.data.mongodb.uri", () -> {
+            return MONGO_CONTAINER.getReplicaSetUrl();
+        });
+    }
 
-	@AfterEach
-	protected void cleanupAllDataInDb() {
-		StepVerifier
-				.create(mongo.getCollectionNames()
-						.flatMap(col -> mongo.remove(new Query(), col))
-						.collectList()
-				)
-				.expectNextCount(1L)
-				.verifyComplete();
-	}
+    @AfterEach
+    protected void cleanupAllDataInDb() {
+        StepVerifier
+                .create(mongo.getCollectionNames()
+                        .flatMap(col -> mongo.remove(new Query(), col))
+                        .collectList()
+                )
+                .expectNextCount(1L)
+                .verifyComplete();
+    }
 
-	@Autowired
-	private TenantService tenantService;
+    @Autowired
+    private TenantService tenantService;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		var deviceData = new DeviceData("deviceId","type");
-		List<Tenant> tenants = new ArrayList<>() {{
-			add(new Tenant("t-1", Set.of("the-cure", "the-doors"), Set.of("bmth", "ddt", "metallica"), deviceData, null));
-			add(new Tenant("t-2", null, Set.of("acdc", "gachi", "led-zeppelin"), deviceData, null));
-			add(new Tenant("t-3", Set.of("motorhead", "the-eagles"), Set.of("billy-talent", "joy-division", "ffdp"), deviceData, null));
-			add(new Tenant("t-4", Set.of("arctic-monkeys", "maneskin"), null, deviceData, null));
-			add(new Tenant("t-5", null, null, deviceData, null));
-			add(new Tenant("t-6", Set.of("scorpions"), Set.of("audioslave"), deviceData, null));
-		}};
+    @BeforeEach
+    void setUp() throws Exception {
+        var deviceData = new DeviceData("deviceId", "type");
+        List<Tenant> tenants = new ArrayList<>() {{
+            add(new Tenant("t-1", new HashSet<String>() {{
+                add("the-cure");
+                add("the-doors");
+            }}, new HashSet<String>() {{
+                add("bmth");
+                add("ddt");
+                add("metallica");
+            }}, deviceData, null));
+            add(new Tenant("t-2", null, Set.of("acdc", "gachi", "led-zeppelin"), deviceData, null));
+            add(new Tenant("t-3", Set.of("motorhead", "the-eagles"), Set.of("billy-talent", "joy-division", "ffdp"), deviceData, null));
+            add(new Tenant("t-4", Set.of("arctic-monkeys", "maneskin"), null, deviceData, null));
+            add(new Tenant("t-5", null, null, deviceData, null));
+            add(new Tenant("t-6", Set.of("scorpions"), Set.of("audioslave"), deviceData, null));
+        }};
 
-		for (Tenant tenant : tenants) {
-			tenantService.save(tenant);
-		}
+        for (Tenant tenant : tenants) {
+            tenantService.save(tenant);
+        }
 
-	}
+    }
 
-	@Test
-	void findByTenantExistingId() {
-		var foundTenant = tenantService.findByTenantId("t-1").get();
-		assertThat(foundTenant.getUrls())
-				.isEqualTo(Set.of("bmth", "ddt", "metallica"));
-	}
+    @Test
+    void findByTenantExistingId() {
+        var foundTenant = tenantService.findByTenantId("t-1").get();
+        assertThat(foundTenant.getUrls())
+                .contains("bmth", "ddt", "metallica");
+    }
 
-	@Test
-	void findTenantIdByUrl(){
-		var expected = "t-6";
-		var actual = tenantRepository.findTenantIdByUrls("audioslave");
-		assertThat(actual).isEqualTo(expected);
-	}
+    @Test
+    void findTenantIdByUrl() {
+        var expected = "t-6";
+        var actual = tenantRepository.findTenantIdByUrls("audioslave");
+        assertThat(actual).isEqualTo(expected);
+    }
 }
