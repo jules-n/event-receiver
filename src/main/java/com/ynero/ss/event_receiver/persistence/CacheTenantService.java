@@ -32,7 +32,7 @@ public class CacheTenantService implements TenantService {
 
     private String tenantIdWithoutPrefix(String tenantId) {
         String tenantPrefix = "tenant: ";
-        return tenantId.replaceFirst(tenantPrefix,"");
+        return tenantId.replaceFirst(tenantPrefix, "");
     }
 
     private String topicWithPrefix(String topic) {
@@ -52,13 +52,17 @@ public class CacheTenantService implements TenantService {
         var tenantIdWithPrefix = tenantIdWithPrefix(tenant.getTenantId());
         cache.save(tenantIdWithPrefix, tenant, expirationTime, TimeUnit.SECONDS);
 
-        tenant.getUrls().forEach(
-                url -> cache.save(urlWithPrefix(url), tenantIdWithPrefix, expirationTime, TimeUnit.SECONDS)
-        );
+        if (tenant.getUrls() != null) {
+            tenant.getUrls().forEach(
+                    url -> cache.save(urlWithPrefix(url), tenantIdWithPrefix, expirationTime, TimeUnit.SECONDS)
+            );
+        }
 
-        tenant.getTopics().forEach(
-                topic -> cache.save(topicWithPrefix(topic), tenantIdWithPrefix, expirationTime, TimeUnit.SECONDS)
-        );
+        if (tenant.getTopics() != null) {
+            tenant.getTopics().forEach(
+                    topic -> cache.save(topicWithPrefix(topic), tenantIdWithPrefix, expirationTime, TimeUnit.SECONDS)
+            );
+        }
 
         return tenant;
     }
@@ -91,7 +95,7 @@ public class CacheTenantService implements TenantService {
 
     @Override
     public String findTenantIdByUrl(String url) {
-        var tenantId = (String)cache.get(urlWithPrefix(url)).get();
+        var tenantId = (String) cache.get(urlWithPrefix(url)).get();
         if (tenantId == null) {
             tenantId = tenantService.findTenantIdByTopic(url);
             cache.save(urlWithPrefix(url), tenantIdWithPrefix(tenantId), expirationTime, TimeUnit.SECONDS);
@@ -103,7 +107,7 @@ public class CacheTenantService implements TenantService {
     @SneakyThrows
     @Override
     public Optional<Tenant> findByTenantId(String tenantId) {
-        Tenant tenant = (Tenant) cache.get(tenantIdWithPrefix(tenantId)).get();
+        Tenant tenant = (Tenant) cache.get(tenantIdWithPrefix(tenantId)).orElse(null);
         if (tenant == null) {
             tenant = tenantService.findByTenantId(tenantId).get();
             cache.save(tenantIdWithPrefix(tenantId), tenant, expirationTime, TimeUnit.SECONDS);

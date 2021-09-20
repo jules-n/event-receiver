@@ -9,7 +9,6 @@ import lombok.NonNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.Set;

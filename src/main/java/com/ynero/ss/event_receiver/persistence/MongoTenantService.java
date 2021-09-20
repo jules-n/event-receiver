@@ -52,7 +52,7 @@ public class MongoTenantService implements TenantService {
         if (tenant.getUrls() != null)
             update.set("urls", tenant.getUrls());
 
-        if(!checkUniquenessOfLinks(tenant)) throw new Exception("Not unique urls/topics");
+        if (!checkUniquenessOfLinks(tenant)) throw new Exception("Not unique urls/topics");
 
         var result = mongoTemplate.updateFirst(new Query(where("tenantId").is(tenant.getTenantId())),
                 update,
@@ -73,16 +73,21 @@ public class MongoTenantService implements TenantService {
     }
 
     private boolean checkUniquenessOfLinks(Tenant tenant) {
-        for (var topic : tenant.getTopics()) {
-            var existingTenant = findTenantIdByTopic(topic);
-            if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
-                return false;
+        if (tenant.getTopics() != null) {
+            for (var topic : tenant.getTopics()) {
+                var existingTenant = findTenantIdByTopic(topic);
+                if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
+                    return false;
+                }
             }
         }
-        for (var url : tenant.getUrls()) {
-            var existingTenant = findTenantIdByUrl(url);
-            if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
-                return false;
+
+        if (tenant.getUrls() != null) {
+            for (var url : tenant.getUrls()) {
+                var existingTenant = findTenantIdByUrl(url);
+                if (existingTenant != null && !existingTenant.equals(tenant.getTenantId())) {
+                    return false;
+                }
             }
         }
         return true;
