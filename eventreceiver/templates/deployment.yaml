@@ -1,61 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "eventreceiver.fullname" . }}
+  name: {{.Values.deployment.name}}
   labels:
-    {{- include "eventreceiver.labels" . | nindent 4 }}
+    app: event-receiver-app
+    workload: {{.Values.deployment.name}}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{.Values.deployment.replicaCount}}
   selector:
     matchLabels:
-      {{- include "eventreceiver.selectorLabels" . | nindent 6 }}
+      app: event-receiver-app
+      workload: {{.Values.deployment.name}}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "eventreceiver.selectorLabels" . | nindent 8 }}
+        app: event-receiver-app
+        workload: {{.Values.deployment.name}}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "eventreceiver.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{.Values.deployment.name}}
+          image: {{.Values.deployment.image.name}}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            - containerPort: {{.Values.deployment.port}}
+          env:
+            - name: TENANT_ID_ATTRIBUTE_KEY
+              value: "{{ .Values.deployment.tenant.id.attribute.key}}"
+            - name: MONGODB_URI
+              value: "{{ .Values.deployment.mongo.uri}}"
+            - name: MONGODB_DATABASE
+              value: "{{ .Values.deployment.mongo.database}}"
+            - name: REDIS_HOST
+              value: "{{ .Values.deployment.redis.host}}"
+            - name: REDIS_PORT
+              value: "{{ .Values.deployment.redis.port}}"
+            - name: REDIS_TIMEOUT
+              value: "{{ .Values.deployment.redis.timeout}}"
+            - name: REDIS_EXPIRATION
+              value: "{{ .Values.deployment.redis.expiration}}"
+            - name: TO_DEVICE_SERVICE_TOPIC
+              value: "{{ .Values.deployment.topic.toDeviceService}}"
+            - name: PROJECT_ID
+              value: "{{ .Values.deployment.projectId}}"
+            - name: TENANTS_SENDING_DATA
+              value: "{{ .Values.deployment.tenants.sendingData}}"
+            - name: KAFKA_PRODUCER_BOOTSTRAP_SERVER
+              value: "{{ .Values.deployment.kafka.producer.bootstrap.server}}"
+            - name: SERVER_PORT
+              value: "{{ .Values.deployment.port}}"

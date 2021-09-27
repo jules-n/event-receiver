@@ -1,1 +1,30 @@
-name: event-receiver
+deployment:
+  name: event-receiver
+  replicaCount: 1
+  image:
+    name: gcr.io/single-system-dev/event-receiver:0.0.1
+  port: 9096
+  tenant:
+      id:
+        attribute:
+          key: tenant-id
+  mongo:
+    uri: mongodb://mongo-0.mongo:27017/
+    database: event-receiver
+  redis:
+    host: 10.133.169.11
+    port: 6379
+    timeout: 6000
+    expiration: 3000
+  topic:
+    toDeviceService: data-from-device
+  projectId: single-system-dev
+  tenants:
+    sendingData: tenants-sending-data
+  kafka:
+    producer:
+      bootstrap:
+        server: 34.118.39.183:9092
+service:
+  target:
+    port: 9096
