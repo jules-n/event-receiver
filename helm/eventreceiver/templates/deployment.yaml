@@ -24,17 +24,17 @@ spec:
       containers:
         - name: {{.Values.deployment.name}}
           image: "gcr.io/single-system-dev/event-receiver:{{.Values.app.version}}"
-            livenessProbe:
-              httpGet:
-                path: /actuator/health
-                port: {{.Values.actuator.server.port}}
-            ports:
-              - containerPort: {{.Values.deployment.port}}
-              - containerPort: {{.Values.actuator.server.port}}
-            volumeMounts:
-              - name: google-cloud-key
-                mountPath: /var/secrets/google
-            env:
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{.Values.actuator.server.port}}
+          ports:
+            - containerPort: {{.Values.deployment.port}}
+            - containerPort: {{.Values.actuator.server.port}}
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
             - name: TENANT_ID_ATTRIBUTE_KEY
