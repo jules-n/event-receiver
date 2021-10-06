@@ -1,5 +1,7 @@
 package com.ynero.ss.event_receiver.config;
 
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -11,6 +13,11 @@ import services.SimpleRedisCacheServiceImpl;
 @Configuration
 public class LettuceConfig {
 
+    @Setter(onMethod_ = @Value("${spring.data.redis.host}"))
+    private String hostName;
+
+    @Setter(onMethod_ = @Value("${spring.data.redis.port}"))
+    private int port;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -25,7 +32,10 @@ public class LettuceConfig {
 
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
-        return new LettuceConnectionFactory();
+        var lettuceConnectionFactory = new LettuceConnectionFactory();
+        lettuceConnectionFactory.setHostName(hostName);
+        lettuceConnectionFactory.setPort(port);
+        return lettuceConnectionFactory;
     }
 
     @Bean
