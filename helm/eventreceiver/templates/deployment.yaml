@@ -61,7 +61,7 @@ spec:
               value: "{{ .Values.deployment.kafka.producer.bootstrap.server}}"
             - name: SERVER_PORT
               value: "{{ .Values.deployment.port}}"
-            - name: EXECUTION_SERVICE_ADDRESS_PORT
-              value: "{{ .Values.deployment.executionService.address.port}}"
+            - name: ACTUATOR_PORT
+              value: "{{ .Values.actuator.server.port}}"
             - name: ACTUATOR_EXPOSE_ENDPOINTS
               value: "{{ .Values.actuator.endpoints.web.exposure.include}}"
