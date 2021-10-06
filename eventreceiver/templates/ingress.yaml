@@ -7,10 +7,10 @@ metadata:
   namespace: default
 spec:
   rules:
-    - host: er.singlesys.com
+    - host: app.singlesys.com
       http:
         paths:
-          - path: /
+          - path: /er
             pathType: Prefix
             backend:
               service:
@@ -19,5 +19,5 @@ spec:
                   number: {{.Values.deployment.port}}
   tls:
     - hosts:
-        - er.singlesys.com
+        - app.singlesys.com
       secretName: tls-secret
