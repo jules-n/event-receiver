@@ -17,12 +17,26 @@ spec:
         app: event-receiver-app
         workload: {{.Values.deployment.name}}
     spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: event-receiver-sa-key
       containers:
         - name: {{.Values.deployment.name}}
-          image: {{.Values.deployment.image.name}}
-          ports:
-            - containerPort: {{.Values.deployment.port}}
-          env:
+          image: "gcr.io/single-system-dev/event-receiver:{{.Values.app.version}}"
+            livenessProbe:
+              httpGet:
+                path: /actuator/health
+                port: {{.Values.actuator.server.port}}
+            ports:
+              - containerPort: {{.Values.deployment.port}}
+              - containerPort: {{.Values.actuator.server.port}}
+            volumeMounts:
+              - name: google-cloud-key
+                mountPath: /var/secrets/google
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
             - name: TENANT_ID_ATTRIBUTE_KEY
               value: "{{ .Values.deployment.tenant.id.attribute.key}}"
             - name: MONGODB_URI
@@ -47,3 +61,7 @@ spec:
               value: "{{ .Values.deployment.kafka.producer.bootstrap.server}}"
             - name: SERVER_PORT
               value: "{{ .Values.deployment.port}}"
+            - name: EXECUTION_SERVICE_ADDRESS_PORT
+              value: "{{ .Values.deployment.executionService.address.port}}"
+            - name: ACTUATOR_EXPOSE_ENDPOINTS
+              value: "{{ .Values.actuator.endpoints.web.exposure.include}}"

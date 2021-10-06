@@ -1,6 +1,5 @@
 tenant-id:
   attribute-key: ${TENANT_ID_ATTRIBUTE_KEY:tenant-id}
-
 spring:
   data:
     mongodb:
@@ -26,3 +25,16 @@ spring:
     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 server:
   port: ${SERVER_PORT:9096}
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: ${ACTUATOR_EXPOSE_ENDPOINTS:*}
+  info:
+    git:
+      enabled: true
+  server:
+    port: ${ACTUATOR_PORT:8066}

@@ -24,7 +24,14 @@ deployment:
   kafka:
     producer:
       bootstrap:
-        server: 34.118.39.183:9092
+        server: 10.8.15.224:9092
 service:
   target:
     port: 9096
+actuator:
+  server:
+    port: 8066
+  endpoints:
+    web:
+      exposure:
+        include: '*'
