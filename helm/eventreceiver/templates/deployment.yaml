@@ -72,5 +72,3 @@ spec:
               value: "{{ .Values.actuator.server.port}}"
             - name: ACTUATOR_EXPOSE_ENDPOINTS
               value: "{{ .Values.actuator.endpoints.web.exposure.include}}"
-#            - name: JDK_JAVA_OPTIONS
-#              value: "{{ .Values.env.JDK_JAVA_OPTIONS }}"
