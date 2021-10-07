@@ -13,7 +13,7 @@ public class TenantsSendingDataSender {
     @Setter(onMethod_ = {@Autowired})
     private KafkaSender<TenantSendingDataDTO> sender;
 
-    @Setter(onMethod_ = {@Value("${spring.producer.tenants-sending-data-topic}")})
+    @Setter(onMethod_ = {@Value("${spring.kafka.producer.tenants-sending-data-topic}")})
     private String topic;
 
     public void send(Tenant tenant) {

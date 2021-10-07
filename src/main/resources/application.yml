@@ -18,11 +18,14 @@ spring:
           destination: ${TO_DEVICE_SERVICE_TOPIC:device-service}
     gcp:
       project-id: ${PROJECT_ID:single-system}
-  producer:
-    tenants-sending-data-topic: ${TENANTS_SENDING_DATA:tenants-sending-data}
-    bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVER:localhost:9092}
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  kafka:
+    producer:
+      tenants-sending-data-topic: ${TENANTS_SENDING_DATA:tenants-sending-data}
+      bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVER:localhost:9092}
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVER:localhost:9092}
 server:
   port: ${SERVER_PORT:9096}
 management:
