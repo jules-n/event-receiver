@@ -4,6 +4,7 @@ deployment:
   image:
     name: gcr.io/single-system-dev/event-receiver:0.0.1
   port: 9096
+  javaOpts: "-Xmx768M"
   tenant:
       id:
         attribute:
