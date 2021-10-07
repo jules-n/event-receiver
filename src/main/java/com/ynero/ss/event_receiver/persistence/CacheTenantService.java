@@ -84,7 +84,7 @@ public class CacheTenantService implements TenantService {
 
     @Override
     public String findTenantIdByTopic(String topic) {
-        var tenantId = cache.get(topicWithPrefix(topic)).get().toString();
+        var tenantId = (String) cache.get(topicWithPrefix(topic)).orElse(null);
         if (tenantId == null) {
             tenantId = tenantService.findTenantIdByTopic(topic);
             cache.save(topicWithPrefix(topic), tenantIdWithPrefix(tenantId), expirationTime, TimeUnit.SECONDS);
@@ -95,9 +95,9 @@ public class CacheTenantService implements TenantService {
 
     @Override
     public String findTenantIdByUrl(String url) {
-        var tenantId = (String) cache.get(urlWithPrefix(url)).get();
+        var tenantId = (String) cache.get(urlWithPrefix(url)).orElse(null);
         if (tenantId == null) {
-            tenantId = tenantService.findTenantIdByTopic(url);
+            tenantId = tenantService.findTenantIdByUrl(url);
             cache.save(urlWithPrefix(url), tenantIdWithPrefix(tenantId), expirationTime, TimeUnit.SECONDS);
             return tenantId;
         }
