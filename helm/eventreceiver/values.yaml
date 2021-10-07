@@ -43,5 +43,5 @@ actuator:
     web:
       exposure:
         include: '*'
-env:
-  JDK_JAVA_OPTIONS: "-Xmx768M"
+#env:
+#  JDK_JAVA_OPTIONS: "-Xmx768M"
