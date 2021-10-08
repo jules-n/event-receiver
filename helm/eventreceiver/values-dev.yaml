@@ -2,4 +2,4 @@ actuator:
   endpoints:
     web:
       exposure:
-        include: *
+        include: '*'
