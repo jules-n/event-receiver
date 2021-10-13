@@ -6,8 +6,8 @@ deployment:
   containers:
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 256m
+        memory: 1024Mi
       limits:
         cpu: 1000m
         memory: 4Gi
