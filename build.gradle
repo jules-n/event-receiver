@@ -23,9 +23,18 @@ springBoot {
 bootJar {
     archiveFileName = "${project.name}.jar"
 }
+
+configurations.all {
+    // TODO: better exclude 'log4j2', 'logack' and any other logging impls from shared-libs
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
 dependencies {
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.0'
 
     //lettuce+redis
@@ -39,7 +48,8 @@ dependencies {
     implementation 'com.jules.ss:converters:1.0.1'
     implementation 'com.jules.ss:sending-lib:0.0.1'
     implementation 'com.jules.ss:cache-lib:0.0.1'
-    implementation 'com.jules.ss:healthchecks:0.0.2'
+    // FIXME: enable healthchecks back after redis-test experiment
+//    implementation 'com.jules.ss:healthchecks:0.0.2'
 
     //pub/sub
     implementation platform('com.google.cloud:libraries-bom:20.9.0')

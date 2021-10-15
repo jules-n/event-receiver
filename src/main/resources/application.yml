@@ -41,3 +41,7 @@ management:
       enabled: true
   server:
     port: ${ACTUATOR_PORT:8066}
+  health:
+    redis:
+      # FIXME: remove this after redis-test experiment
+      enabled: false
