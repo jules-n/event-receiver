@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent {
+        any
+        docker { image 'gcr.io/distroless/java:11-debug' }
+    }
     environment {
         SERVICE_NAME = 'event-receiver'
         SS_DEV_ARTIFACTORY_USERNAME = credentials("jenkins-artifactory-username")
