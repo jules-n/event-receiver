@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment {
         SERVICE_NAME = 'event-receiver'
+        SS_DEV_ARTIFACTORY_USERNAME = credentials("jenkins-artifactory-username")
+        SS_DEV_ARTIFACTORY_PASSWORD = credentials("jenkins-artifactory-password")
     }
     stages {
         stage('init') {
