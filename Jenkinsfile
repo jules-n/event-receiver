@@ -26,7 +26,9 @@ pipeline {
         }
         stage('integration test') {
             agent {
-                docker 'gcr.io/distroless/java:11-debug'
+                dockerfile {
+                    label "docker"
+                }
             }
             steps {
                 sh './gradlew integrationTest'
