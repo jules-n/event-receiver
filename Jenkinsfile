@@ -1,8 +1,5 @@
 pipeline {
-    agent {
-        any
-        docker { image 'gcr.io/distroless/java:11-debug' }
-    }
+    agent any
     environment {
         SERVICE_NAME = 'event-receiver'
         SS_DEV_ARTIFACTORY_USERNAME = credentials("jenkins-artifactory-username")
@@ -28,6 +25,9 @@ pipeline {
             }
         }
         stage('integration test') {
+            agent {
+                docker 'gcr.io/distroless/java:11-debug'
+            }
             steps {
                 sh './gradlew integrationTest'
             }
