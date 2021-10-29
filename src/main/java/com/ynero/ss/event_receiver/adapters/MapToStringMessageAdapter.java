@@ -2,9 +2,9 @@ package com.ynero.ss.event_receiver.adapters;
 
 import com.ynero.ss.event_receiver.persistence.TenantService;
 import dtos.DeviceDTO;
-import dtos.Event;
+import dtos.EventDTO;
 import json_converters.DTOToMessageJSONConverter;
-import dtos.Port;
+import dtos.PortDTO;
 import json_converters.DTOToMessageJSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class MapToStringMessageAdapter {
         var eventTypeAlias = deviceData.getEventTypeAlias();
         var deviceId = UUID.fromString(messageMap.get(deviceIdAlias).toString());
 
-        var eventBuilder = Event.builder()
+        var eventBuilder = EventDTO.builder()
                 .time(null);
 
         messageMap.keySet().forEach(
@@ -44,7 +44,7 @@ public class MapToStringMessageAdapter {
 
         var event = eventBuilder.build();
 
-        Port port = Port.builder()
+        PortDTO port = PortDTO.builder()
                 .name(messageMap.get(eventTypeAlias).toString())
                 .event(event)
                 .build();

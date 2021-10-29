@@ -62,7 +62,8 @@ dependencies {
     //pub/sub
     implementation platform('com.google.cloud:libraries-bom:20.9.0')
     implementation 'com.google.cloud:google-cloud-pubsub'
-    implementation 'org.springframework.cloud:spring-cloud-gcp-autoconfigure:1.1.0.RELEASE'
+    implementation 'com.google.cloud:spring-cloud-gcp-autoconfigure:2.0.0'
+    implementation 'com.google.cloud:spring-cloud-gcp-pubsub:2.0.3'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-pubsub', version: '1.2.1.RELEASE'
 
     //kafka
