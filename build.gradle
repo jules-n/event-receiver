@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'com.coditory.integration-test' version '1.2.3'
     id "com.palantir.git-version" version "0.12.3"
+    id "com.jfrog.artifactory" version '4.24.20'
 }
 
 group = 'com.ynero.ss'
@@ -14,6 +15,14 @@ targetCompatibility = '11'
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url "http://ss-dev-jenkins:8081/artifactory/ss-artifacts"
+        allowInsecureProtocol true
+        credentials {
+            username = System.getenv('SS_DEV_ARTIFACTORY_USERNAME')
+            password = System.getenv('SS_DEV_ARTIFACTORY_PASSWORD')
+        }
+    }
 }
 
 springBoot {
@@ -33,13 +42,13 @@ dependencies {
     implementation 'io.lettuce:lettuce-core:6.1.4.RELEASE'
 
     //shared
-    implementation 'com.jules.ss:non-functional-lib:0.1.2'
-    implementation 'com.jules.ss:converters:1.0.1'
-    implementation 'com.jules.ss:common-dtos:1.0.2.1'
-    implementation 'com.jules.ss:converters:1.0.1'
-    implementation 'com.jules.ss:sending-lib:0.0.1'
+    implementation 'com.jules.ss:non-functional-lib:0.0.2'
+    implementation 'com.jules.ss:converters:0.0.2'
+    implementation 'com.jules.ss:common-dtos:0.0.2'
+    implementation 'com.jules.ss:converters:0.0.2'
+    implementation 'com.jules.ss:sending-lib:0.0.2'
     implementation 'com.jules.ss:cache-lib:0.0.1'
-    implementation 'com.jules.ss:healthchecks:0.0.4.4'
+    implementation 'com.jules.ss:healthchecks:0.0.9'
 
     //pub/sub
     implementation platform('com.google.cloud:libraries-bom:20.9.0')
@@ -82,7 +91,6 @@ dependencies {
     testImplementation 'org.assertj:assertj-core'
     integrationImplementation "org.testcontainers:junit-jupiter:1.15.3"
     integrationImplementation "org.testcontainers:mongodb:1.15.3"
-
 }
 
 tasks.withType(Test) {
