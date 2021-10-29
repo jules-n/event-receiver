@@ -25,11 +25,6 @@ pipeline {
             }
         }
         stage('integration test') {
-            agent {
-                dockerfile {
-                    label "docker"
-                }
-            }
             steps {
                 sh './gradlew integrationTest'
             }
