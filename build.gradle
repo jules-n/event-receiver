@@ -51,13 +51,13 @@ dependencies {
     implementation 'io.lettuce:lettuce-core:6.1.4.RELEASE'
 
     //shared
-    implementation 'com.jules.ss:non-functional-lib:0.0.2'
-    implementation 'com.jules.ss:converters:0.0.2'
-    implementation 'com.jules.ss:common-dtos:0.0.2'
-    implementation 'com.jules.ss:converters:0.0.2'
-    implementation 'com.jules.ss:sending-lib:0.0.2'
-    implementation 'com.jules.ss:cache-lib:0.0.2'
-    implementation 'com.jules.ss:healthchecks:0.0.9'
+    implementation 'com.ynero.ss:non-functional-lib:0.0.2'
+    implementation 'com.ynero.ss:converters:0.0.2'
+    implementation 'com.ynero.ss:common-dtos:0.0.2'
+    implementation 'com.ynero.ss:converters:0.0.2'
+    implementation 'com.ynero.ss:sending-lib:0.0.2'
+    implementation 'com.ynero.ss:cache-lib:0.0.2'
+    implementation 'com.ynero.ss:healthchecks:0.0.9'
 
     //pub/sub
     implementation platform('com.google.cloud:libraries-bom:20.9.0')
