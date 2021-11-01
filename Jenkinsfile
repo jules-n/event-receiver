@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'jenkins-service-account-key-file', variable: 'GC_KEY')]) {
-                        sh "gcloud auth activate-service-account jenkins-dev --key-file=${GC_KEY}"
+                        sh "gcloud auth activate-service-account jenkins-dev@single-system-dev.iam.gserviceaccount.com --key-file=${GC_KEY}"
                     }
                     echo "TODO: implement helm deployment here"
                 }
