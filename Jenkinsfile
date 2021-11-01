@@ -31,14 +31,14 @@ pipeline {
         }
         stage('deploy') {
             environment {
-                GOOGLE_APPLICATION_CREDENTIALS = credentials('jenkins-single-system-dev-SA-KEY-a8f12ceb3ab2')
+                GOOGLE_APPLICATION_CREDENTIALS = credentials('JENKINS_SERVICE_ACC_KEY')
                 GCP_PROJECT_ID = 'single-system-dev'
             }
             steps {
                 script {
                     sh "gcloud auth activate-service-account "
-                        + "--key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID"
-                    echo "TODO: implement helm deployment here (version = ${SERVICE_VERSION})"
+                        + "--key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID"
+                    echo "TODO: implement helm deployment here"
                 }
             }
         }

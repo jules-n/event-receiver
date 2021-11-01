@@ -70,7 +70,8 @@ class TenantRepositoryTest {
     @DynamicPropertySource
     protected static void redisProperties(DynamicPropertyRegistry reg) {
         reg.add("spring.data.redis.host", () -> {
-            return REDIS.getContainerIpAddress();
+            var ip = REDIS.getContainerIpAddress();
+            return ip;
         });
     }
 
