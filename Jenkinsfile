@@ -4,11 +4,16 @@ pipeline {
         booleanParam(name: 'incMinor', defaultValue: false, description: '')
         booleanParam(name: 'incMajor', defaultValue: false, description: '')
         booleanParam(name: 'incPatch', defaultValue: true, description: '')
+        string(name: 'helmValues', choices: ['prod', 'dev'], defaultValue: 'prod', description: '')
     }
     environment {
         SERVICE_NAME = 'event-receiver'
+        GCP_PROJECT_ID = 'single-system-dev'
         SS_DEV_ARTIFACTORY_USERNAME = credentials("jenkins-artifactory-username")
         SS_DEV_ARTIFACTORY_PASSWORD = credentials("jenkins-artifactory-password")
+        SERVICE_ACCOUNT = credentials("jenkins_gcp_service_account")
+        GCP_CLUSTER = credentials("gcp_cluster")
+        HELM_DIRECTORY = 'eventreceiver'
     }
     stages {
         stage('init') {
@@ -40,20 +45,28 @@ pipeline {
                 sh './gradlew integrationTest'
             }
         }
+        stage('image publish') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'jenkins-service-account-key-file', variable: 'GC_KEY')]) {
+                        sh "docker login -u _json_key --password-stdin https://gcr.io < $GC_KEY"
+                        sh "docker build -t gcr.io/${env.GCP_PROJECT_ID}/${env.SERVICE_NAME}:${env.SERVICE_VERSION} . "
+                        sh "docker push gcr.io/${env.GCP_PROJECT_ID}/${env.SERVICE_NAME}:${env.SERVICE_VERSION}"
+                    }
+                }
+            }
+        }
         stage('deploy') {
             environment {
-                GCP_PROJECT_ID = 'single-system-dev'
+                GCP_ZONE = 'europe-central2-a'
             }
             steps {
                 script {
                     withCredentials([file(credentialsId: 'jenkins-service-account-key-file', variable: 'GC_KEY')]) {
-                        //next stage
-                        sh "gcloud auth activate-service-account jenkins-dev@single-system-dev.iam.gserviceaccount.com --key-file=${GC_KEY}"
-                        sh "docker login -u _json_key --password-stdin https://gcr.io < $GC_KEY"
-                        sh "docker build -t gcr.io/single-system-dev/event-receiver:${env.SERVICE_VERSION} . "
-                        sh "docker push gcr.io/single-system-dev/event-receiver:${env.SERVICE_VERSION}"
-                        //next stage
-                        sh "helm upgrade --set app.version=${env.SERVICE_VERSION} -f ./helm/eventreceiver/values-prod.yaml eventreceiver ./helm/eventreceiver"
+                        sh "gcloud auth activate-service-account ${env.SERVICE_ACCOUNT}" +
+                                " --key-file=${GC_KEY} --project ${env.GCP_PROJECT_ID}"
+                        sh "gcloud container clusters get-credentials ${env.GCP_CLUSTER} --zone ${GCP_ZONE} --project ${env.GCP_PROJECT_ID}"
+                        sh "helm upgrade --set app.version=${env.SERVICE_VERSION} -f ./helm/${env.HELM_DIRECTORY}/values-${params.helmValues}.yaml ${env.HELM_DIRECTORY} ./helm/${env.HELM_DIRECTORY}"
                     }
                 }
             }
