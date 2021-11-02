@@ -47,9 +47,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'jenkins-service-account-key-file', variable: 'GC_KEY')]) {
+                        //next stage
                         sh "gcloud auth activate-service-account jenkins-dev@single-system-dev.iam.gserviceaccount.com --key-file=${GC_KEY}"
+                        sh "docker login -u _json_key --password-stdin https://gcr.io < $GC_KEY"
                         sh "docker build -t gcr.io/single-system-dev/event-receiver:${env.SERVICE_VERSION} . "
                         sh "docker push gcr.io/single-system-dev/event-receiver:${env.SERVICE_VERSION}"
+                        //next stage
                         sh "helm upgrade --set app.version=${env.SERVICE_VERSION} -f ./helm/eventreceiver/values-prod.yaml eventreceiver ./helm/eventreceiver"
                     }
                 }
