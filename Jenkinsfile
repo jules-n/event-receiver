@@ -4,7 +4,7 @@ pipeline {
         booleanParam(name: 'incMinor', defaultValue: false, description: '')
         booleanParam(name: 'incMajor', defaultValue: false, description: '')
         booleanParam(name: 'incPatch', defaultValue: true, description: '')
-        string(name: 'helmValues', choices: ['prod', 'dev'], defaultValue: 'prod', description: '')
+        choice(name: 'helmValues', choices: ['prod', 'dev'], defaultValue: 'prod', description: '')
     }
     environment {
         SERVICE_NAME = 'event-receiver'
