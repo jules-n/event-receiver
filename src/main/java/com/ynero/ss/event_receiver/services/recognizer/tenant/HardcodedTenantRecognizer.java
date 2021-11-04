@@ -2,9 +2,13 @@ package com.ynero.ss.event_receiver.services.recognizer.tenant;
 
 import com.ynero.ss.event_receiver.persistence.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Service
+@Primary
 public class HardcodedTenantRecognizer implements TenantRecognizer {
 
     private final static String DEFAULT_TENANT = "hardcoded-recognized-tenant";
@@ -14,13 +18,12 @@ public class HardcodedTenantRecognizer implements TenantRecognizer {
 
     @Override
     public String getTenant(Map<PATH, String> params) {
-        if (params.containsKey(PATH.URL))
-            return tenantService.findTenantIdByUrl(params.get(PATH.URL));
-
-        if (params.containsKey(PATH.TOPIC))
-            return tenantService.findTenantIdByTopic(params.get(PATH.TOPIC));
-
-        return getTenant();
+        var path = params.keySet().stream().findFirst().get();
+        return switch (path) {
+            case URL -> tenantService.findTenantIdByUrl(params.get(PATH.URL));
+            case TOPIC -> tenantService.findTenantIdByTopic(params.get(PATH.TOPIC));
+            default -> getTenant();
+        };
     }
 
     @Override
