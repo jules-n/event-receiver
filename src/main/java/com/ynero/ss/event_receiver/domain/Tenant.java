@@ -9,8 +9,6 @@ import lombok.NonNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.io.Serializable;
 import java.util.Set;
 
 
@@ -18,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = Tenant.COLLECTION_NAME)
-public class Tenant implements Serializable {
+public class Tenant{
     public static final String COLLECTION_NAME = "tenants";
     @Indexed(unique = true, name = "tenantId_")
     @Field(name = "tenantId")

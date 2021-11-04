@@ -34,7 +34,7 @@ public class ReceiverController {
     private MapToStringMessageAdapter adapter;
 
     @PostMapping("/{tenantsUrl}")
-    public ResponseEntity postMessage(@PathVariable String tenantsUrl,
+    public ResponseEntity receiveMessage(@PathVariable String tenantsUrl,
                                       @RequestParam(required = false) Object paramMessage,
                                       @RequestBody(required = false) Object bodyMessage,
                                       @RequestHeader(required = false) Object headerMessage)

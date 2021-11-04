@@ -4,7 +4,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI:mongodb://localhost:27017}
-      database: ${MONGODB_DATABASE:er-test}
+      database: ${MONGODB_DATABASE:event-receiver}
       autoIndexCreation: true
     redis:
       host: ${REDIS_HOST:127.0.0.1}
