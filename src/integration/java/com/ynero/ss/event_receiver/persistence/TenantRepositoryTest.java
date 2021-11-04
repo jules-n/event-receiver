@@ -1,5 +1,6 @@
-package com.ynero.ss.event_receiver;
+package com.ynero.ss.event_receiver.persistence;
 
+import com.ynero.ss.event_receiver.IntegrationTestSetUp;
 import com.ynero.ss.event_receiver.domain.DeviceData;
 import com.ynero.ss.event_receiver.domain.Tenant;
 import com.ynero.ss.event_receiver.persistence.TenantRepository;
@@ -36,55 +37,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("integration-test")
 @Testcontainers
 @DirtiesContext
-class TenantRepositoryTest {
-    public static final String MONGO_VERSION = "4.4.4";
-    public static final String REDIS_VERSION = "5.0.7";
-    private static final long REDIS_MEMORY = 1024*1024*1024;
-    @Autowired
-    protected ReactiveMongoOperations mongo;
+class TenantRepositoryTest extends IntegrationTestSetUp {
 
     @Autowired
     private TenantRepository tenantRepository;
-
-    @Container
-    protected static final MongoDBContainer MONGO_CONTAINER = new MongoDBContainer("mongo:" + MONGO_VERSION);
-
-    @Container
-    public static final GenericContainer REDIS = new GenericContainer<>(DockerImageName.parse("redis:" + REDIS_VERSION))
-            //.withClasspathResourceMapping("redis.conf", "./redis.conf", BindMode.READ_ONLY)
-            .withCreateContainerCmdModifier(cmd -> cmd.getHostConfig()
-                    .withMemory(REDIS_MEMORY)
-                    .withMemorySwap(0L)
-            )
-            .withExposedPorts(6379)
-            .withEnv("maxmemory", "256mb")
-            .withEnv("maxmemory-policy", "allkeys-lru");
-
-    @DynamicPropertySource
-    protected static void mongoProperties(DynamicPropertyRegistry reg) {
-        reg.add("spring.data.mongodb.uri", () -> {
-            return MONGO_CONTAINER.getReplicaSetUrl();
-        });
-    }
-
-    @DynamicPropertySource
-    protected static void redisProperties(DynamicPropertyRegistry reg) {
-        reg.add("spring.data.redis.host", () -> {
-            var ip = REDIS.getContainerIpAddress();
-            return ip;
-        });
-    }
-
-    @AfterEach
-    protected void cleanupAllDataInDb() {
-        StepVerifier
-                .create(mongo.getCollectionNames()
-                        .flatMap(col -> mongo.remove(new Query(), col))
-                        .collectList()
-                )
-                .expectNextCount(1L)
-                .verifyComplete();
-    }
 
     @Autowired
     private TenantService tenantService;
