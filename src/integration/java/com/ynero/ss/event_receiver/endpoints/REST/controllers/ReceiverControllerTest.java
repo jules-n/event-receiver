@@ -77,7 +77,6 @@ public class ReceiverControllerTest extends IntegrationTestSetUp {
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(requestJson))
                 .andDo(log())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("You may not have added this URL for the tenant account"));
+                .andExpect(status().isNotFound());
     }
 }
