@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
@@ -17,10 +19,13 @@ public class MainExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RestError> handleItemNotFoundException(
             NoSuchElementException itemNotFoundException,
-            WebRequest request
+            WebRequest webRequest
     ) {
-        String message = "No such url: " + request.getDescription(false);
-        return buildResponseEntity(new RestError(HttpStatus.NOT_FOUND, message));
+        var request = ((ServletWebRequest) webRequest).getRequest();
+        var url = ((HashMap<String, Object>)request.getAttribute("org.springframework.web.servlet.View.pathVariables")).get("tenantsUrl");
+        String message = "No such url: " + url;
+        var restError = new RestError(HttpStatus.NOT_FOUND, message, request.getRequestURI(), request.getMethod());
+        return buildResponseEntity(restError);
     }
 
     private ResponseEntity<RestError> buildResponseEntity(RestError error) {

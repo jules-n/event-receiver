@@ -14,6 +14,8 @@ public class RestError {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
+    private String path;
+    private String method;
 
     private RestError() {
         timestamp = LocalDateTime.now();
@@ -28,5 +30,20 @@ public class RestError {
         this();
         this.status = status;
         this.message = message;
+    }
+
+    public RestError(HttpStatus status, String message, String path) {
+        this();
+        this.status = status;
+        this.message = message;
+        this.path = path;
+    }
+
+    public RestError(HttpStatus status, String message, String path, String method) {
+        this();
+        this.status = status;
+        this.message = message;
+        this.path = path;
+        this.method = method;
     }
 }
