@@ -6,9 +6,11 @@ plugins {
     id "com.palantir.git-version" version "0.12.3"
     id "com.jfrog.artifactory" version '4.24.20'
 }
-
 group = 'com.ynero.ss'
+sourceCompatibility = 16
+targetCompatibility = 16
 version = tagVersion()
+
 def tagVersion(){
    return ['sh', '-c', 'git describe --abbrev=0 --tags'].execute().text.trim()
 }
