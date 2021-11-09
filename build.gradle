@@ -15,8 +15,8 @@ def tagVersion(){
    return ['sh', '-c', 'git describe --abbrev=0 --tags'].execute().text.trim()
 }
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
     maven {
         url "http://ss-dev-jenkins:8081/artifactory/ss-artifacts"
         allowInsecureProtocol true
