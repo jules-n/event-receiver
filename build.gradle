@@ -7,8 +7,9 @@ plugins {
     id "com.jfrog.artifactory" version '4.24.20'
 }
 group = 'com.ynero.ss'
-sourceCompatibility = 16
-targetCompatibility = 16
+println JavaVersion.current()
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 version = tagVersion()
 
 def tagVersion(){
