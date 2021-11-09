@@ -25,3 +25,8 @@ spring:
       bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVER:localhost:9092}
 server:
   port: ${SERVER_PORT:9096}
+rest:
+  exception:
+    handlers:
+      include:
+        internal-server-exception: true

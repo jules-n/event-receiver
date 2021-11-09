@@ -41,3 +41,8 @@ management:
       enabled: true
   server:
     port: ${ACTUATOR_PORT:8066}
+rest:
+  exception:
+    handlers:
+      include:
+        internal-server-exception: true
