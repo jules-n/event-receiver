@@ -1,4 +1,4 @@
 FROM gradle:7.2.0-jdk17
 RUN apt-get update && apt-get install -y git docker containerd systemctl
-RUN systemctl start docker
+RUN -u root -t -i container_id systemctl start docker
 
