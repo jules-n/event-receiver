@@ -2,5 +2,5 @@ FROM gradle:7.2.0-jdk17
 RUN apt-get update && apt-get install -y git docker containerd systemctl sudo
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 USER docker
-RUN sudo systemctl start docker
+RUN -u docker systemctl start docker
 
