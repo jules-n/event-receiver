@@ -1,0 +1,4 @@
+FROM openjdk:17.0.1
+RUN sudo apt-get install git docker containerd
+RUN sudo systemctl start docker
+

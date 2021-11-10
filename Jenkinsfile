@@ -18,6 +18,11 @@ pipeline {
     }
     stages {
         stage('init') {
+            agent { 
+                dockerfile {
+                     filename 'Dockerfile.build'
+                }
+            }
             steps {
                 script {
                     sshagent(credentials: ['jenkins-dev-event-receiver-id-rsa']) {
