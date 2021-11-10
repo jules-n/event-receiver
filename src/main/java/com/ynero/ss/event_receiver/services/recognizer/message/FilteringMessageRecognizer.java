@@ -9,11 +9,12 @@ public class FilteringMessageRecognizer implements MessageRecognizer {
     @Override
     public Object getMessage(Object... args) {
 
-        for (Object request : args) {
-            if(request!=null){
-                return request;
+        if (args != null)
+            for (Object request : args) {
+                if (request != null) {
+                    return request;
+                }
             }
-        }
 
         throw new IllegalArgumentException();
     }

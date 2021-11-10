@@ -5,7 +5,6 @@ import dtos.DeviceDTO;
 import dtos.EventDTO;
 import json_converters.DTOToMessageJSONConverter;
 import dtos.PortDTO;
-import json_converters.DTOToMessageJSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
