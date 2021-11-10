@@ -14,6 +14,7 @@ pipeline {
         SERVICE_ACCOUNT = credentials("jenkins_gcp_service_account")
         GCP_CLUSTER = credentials("gcp_cluster")
         HELM_DIRECTORY = 'eventreceiver'
+        GRADLE_BUILD_IMAGE = 'openjdk:17.0.1'
     }
     stages {
         stage('init') {
@@ -31,16 +32,19 @@ pipeline {
             }
         }
         stage('build') {
+            agent { docker "${GRADLE_BUILD_IMAGE}" }
             steps {
                 sh './gradlew build -x test -x integrationTest'
             }
         }
         stage('unit test') {
+            agent { docker "${GRADLE_BUILD_IMAGE}" }
             steps {
                 sh './gradlew test'
             }
         }
         stage('integration test') {
+            agent { docker "${GRADLE_BUILD_IMAGE}" }
             steps {
                 sh './gradlew integrationTest'
             }
