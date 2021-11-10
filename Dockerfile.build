@@ -1,4 +1,4 @@
-FROM openjdk:17.0.1
+FROM gradle:7.2.0-jdk17
 RUN apt-get install git docker containerd
 RUN systemctl start docker
 
