@@ -19,6 +19,7 @@ pipeline {
         stage('init') {
             steps {
                 script {
+                    sh script: 'java -version'
                     sshagent(credentials: ['jenkins-dev-event-receiver-id-rsa']) {
                         sh(script: "git fetch --tags")
                         def CURRENT_GIT_TAG = sh script: './gradlew -q printVersion', returnStdout: true
