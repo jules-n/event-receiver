@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+       jdk 'jdk-17'
+    }
     parameters {
         booleanParam(name: 'incMinor', defaultValue: false, description: '')
         booleanParam(name: 'incMajor', defaultValue: false, description: '')
