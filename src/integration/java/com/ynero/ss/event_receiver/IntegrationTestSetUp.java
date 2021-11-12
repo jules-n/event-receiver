@@ -1,6 +1,6 @@
 package com.ynero.ss.event_receiver;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
@@ -22,7 +22,6 @@ import reactor.test.StepVerifier;
 @AutoConfigureDataMongo
 @ActiveProfiles("integration-test")
 @Testcontainers
-@Slf4j
 @DirtiesContext
 public class IntegrationTestSetUp {
     public static final String MONGO_VERSION = "4.4.4";

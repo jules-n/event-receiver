@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -22,7 +23,7 @@ public class MapToStringMessageAdapter {
 
     public String adapt(Map<String, Object> messageMap, String tenantId) {
 
-        var tenant = tenantService.findByTenantId(tenantId).get();
+        var tenant = tenantService.findByTenantId(tenantId).orElseThrow();
         var deviceData = tenant.getDeviceData();
         var deviceIdAlias = deviceData.getDeviceIdAlias();
         var eventTypeAlias = deviceData.getEventTypeAlias();
