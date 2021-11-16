@@ -29,6 +29,9 @@ spring:
 server:
   port: ${SERVER_PORT:9096}
 management:
+  health:
+    redis:
+      enabled: false
   endpoint:
     health:
       show-details: always
@@ -46,3 +49,6 @@ rest:
     handlers:
       include:
         internal-server-exception: true
+redis:
+  reestablishing: true
+  attempts: 6
