@@ -1,5 +1,6 @@
 package com.ynero.ss.event_receiver.config;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -52,19 +53,6 @@ public class LettuceConfig {
             havingValue = "false")
     public CacheService cacheService(){
         return new SimpleRedisCacheServiceImpl(redisTemplate());
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = {"redis.reestablishing"},
-            havingValue = "true")
-    public CacheService NoCacheService(){
-        try {
-            Jedis jedis = new Jedis(hostName, port);
-            var info = jedis.info("server");
-            return new SimpleRedisCacheServiceImpl(redisTemplate());
-        } catch (Exception ex) {
-            return new NoCacheImpl();
-        }
     }
 
 }
