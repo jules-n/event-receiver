@@ -2,6 +2,7 @@ package com.ynero.ss.event_receiver.config;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -41,7 +42,12 @@ public class LettuceConfig {
     }
 
     @Bean
-    public CacheService cacheService(){
+    @ConditionalOnProperty(
+            name = {"spring.data.redis.tolerance"},
+            havingValue = "false"
+    )
+    public CacheService simpleCacheService(){
         return new SimpleRedisCacheServiceImpl(redisTemplate());
     }
+
 }

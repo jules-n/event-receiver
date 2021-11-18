@@ -11,6 +11,8 @@ spring:
       port: ${REDIS_PORT:6379}
       timeout: ${REDIS_TIMEOUT:6000}
       expiration: ${REDIS_EXPIRATION:600}
+      tolerance: ${REDIS_CONNECTION_IS_TOLERANCE:true}
+      max-downtime: ${REDIS_TOLERANCE_MAX_DOWNTIME:1m}
   cloud:
     stream:
       bindings:
@@ -29,6 +31,9 @@ spring:
 server:
   port: ${SERVER_PORT:9096}
 management:
+  health:
+    redis:
+      enabled: false
   endpoint:
     health:
       show-details: always
