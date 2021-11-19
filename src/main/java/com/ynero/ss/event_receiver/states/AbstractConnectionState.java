@@ -1,12 +1,10 @@
-package com.ynero.ss.event_receiver.healthchecks.states;
+package com.ynero.ss.event_receiver.states;
 
-import com.ynero.ss.event_receiver.healthchecks.TolerableRedisHealthCheck;
 import lombok.Builder;
 import lombok.Data;
-import lombok.SneakyThrows;
 import redis.clients.jedis.Jedis;
 
-public abstract class AbstractConnectionState implements ConnectionState {
+public abstract class AbstractConnectionState<T> implements ConnectionState<T> {
     protected Jedis jedis;
     protected String info;
 
@@ -30,15 +28,15 @@ public abstract class AbstractConnectionState implements ConnectionState {
     }
 
     @Override
-    @SneakyThrows
-    public ConnectionState onEnter(TolerableRedisHealthCheck context) {
+    public void onEnter(IContext context) {
         info = getRedisStatus().getDetails();
-        var nextState = context.getState().next(context);
-        if (nextState != null) {
+    }
+
+    protected void goNext(IContext context, ConnectionState nextState) {
+        if (nextState!=null) {
             context.setState(nextState);
             nextState.onEnter(context);
         }
-        return nextState;
     }
 
     @Data

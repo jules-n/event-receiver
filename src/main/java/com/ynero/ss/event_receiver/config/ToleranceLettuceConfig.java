@@ -1,5 +1,6 @@
 package com.ynero.ss.event_receiver.config;
 
+import com.ynero.ss.event_receiver.persistence.ToleranceCache;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,7 @@ public class ToleranceLettuceConfig {
             jedis.close();
             return new SimpleRedisCacheServiceImpl(lettuceConfig.redisTemplate());
         } catch (Exception ex) {
-            return new NoCacheImpl();
+            return new ToleranceCache<String, Object>(hostName, port);
         }
     }
 }
