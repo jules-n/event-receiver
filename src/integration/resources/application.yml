@@ -3,11 +3,17 @@ tenant-id:
 
 spring:
   data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017}
+      database: ${MONGODB_DATABASE:event-receiver}
+      autoIndexCreation: true
     redis:
       host: ${REDIS_HOST:127.0.0.1}
       port: ${REDIS_PORT:6379}
       timeout: ${REDIS_TIMEOUT:6000}
       expiration: ${REDIS_EXPIRATION:600}
+      tolerance: ${REDIS_CONNECTION_IS_TOLERANCE:true}
+      max-downtime: ${REDIS_TOLERANCE_MAX_DOWNTIME:2m}
   cloud:
     stream:
       bindings:

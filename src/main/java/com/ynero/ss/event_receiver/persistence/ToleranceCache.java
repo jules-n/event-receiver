@@ -10,21 +10,18 @@ import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 import services.CacheService;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class ToleranceCache<K, V> implements CacheService<K, V>, IContext <CacheService<K, V>>{
 
-    private Jedis jedis;
     @Getter
     @Setter
     private ConnectionState<CacheService<K, V>> state;
 
     public ToleranceCache(@Value("${spring.data.redis.host}") String hostName, @Value("${spring.data.redis.port}") int port) {
-        jedis = new Jedis(hostName, port);
-        state = new HalfOpenConnectionState<K, V>(jedis);
+        state = new HalfOpenConnectionState<K, V>(hostName, port);
     }
 
     @Override

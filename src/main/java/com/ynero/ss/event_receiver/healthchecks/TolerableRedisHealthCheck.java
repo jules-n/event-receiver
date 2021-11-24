@@ -26,13 +26,9 @@ public class TolerableRedisHealthCheck implements HealthIndicator, IContext<Heal
     @Setter
     private ConnectionState<Health> state;
 
-    @Setter(onMethod_ = @Value("${spring.data.redis.max-downtime}"))
-    @Getter
-    private Duration downtime;
-
     public TolerableRedisHealthCheck(@Value("${spring.data.redis.host}") String hostName, @Value("${spring.data.redis.port}") int port) {
         jedis = new Jedis(hostName, port);
-        state = new HalfOpenConnectionState(jedis);
+        state = new HalfOpenConnectionState(hostName, port);
     }
 
     @Override

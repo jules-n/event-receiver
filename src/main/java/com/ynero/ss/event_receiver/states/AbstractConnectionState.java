@@ -5,16 +5,20 @@ import lombok.Data;
 import redis.clients.jedis.Jedis;
 
 public abstract class AbstractConnectionState<T> implements ConnectionState<T> {
-    protected Jedis jedis;
+    protected String hostName;
+    protected int port;
     protected String info;
 
-    public AbstractConnectionState(Jedis jedis) {
-        this.jedis = jedis;
+    public AbstractConnectionState(String hostName, int port) {
+        this.hostName = hostName;
+        this.port = port;
     }
 
     protected RedisStatus getRedisStatus() {
         try {
+            var jedis = new Jedis(hostName, port);
             var info = jedis.info("server");
+            jedis.close();
             return RedisStatus.builder()
                     .isUp(true)
                     .details(info)
@@ -22,7 +26,7 @@ public abstract class AbstractConnectionState<T> implements ConnectionState<T> {
         } catch (Exception ex) {
             return RedisStatus.builder()
                     .isUp(false)
-                    .details("Could not connect to Redis")
+                    .details(ex.getMessage())
                     .build();
         }
     }
@@ -44,10 +48,5 @@ public abstract class AbstractConnectionState<T> implements ConnectionState<T> {
     public static class RedisStatus{
         private boolean isUp;
         private String details;
-    }
-
-    @Override
-    public void close() throws Exception {
-        jedis.close();
     }
 }

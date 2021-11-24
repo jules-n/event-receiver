@@ -1,6 +1,6 @@
 package com.ynero.ss.event_receiver.states;
 
-public interface ConnectionState<T> extends AutoCloseable{
+public interface ConnectionState<T> {
 
     T access(IContext context);
 
