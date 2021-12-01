@@ -57,11 +57,29 @@ class TenantRepositoryTest extends IntegrationTestSetUp {
                 add("ddt");
                 add("metallica");
             }}, deviceData, null));
-            add(new Tenant("t-2", null, Set.of("acdc", "gachi", "led-zeppelin"), deviceData, null));
-            add(new Tenant("t-3", Set.of("motorhead", "the-eagles"), Set.of("billy-talent", "joy-division", "ffdp"), deviceData, null));
-            add(new Tenant("t-4", Set.of("arctic-monkeys", "maneskin"), null, deviceData, null));
+            Set<String> t2Urls = new HashSet<>();
+            t2Urls.add("acdc");
+            t2Urls.add("gachi");
+            t2Urls.add("led-zeppelin");
+            add(new Tenant("t-2", null, t2Urls, deviceData, null));
+            Set<String> t3Urls = new HashSet<>();
+            t3Urls.add("billy-talent");
+            t3Urls.add("joy-division");
+            t3Urls.add("ffdp");
+            Set<String> t3Topics = new HashSet<>();
+            t3Topics.add("motorhead");
+            t3Topics.add("the-eagles");
+            add(new Tenant("t-3", t3Topics, t3Urls, deviceData, null));
+            Set<String> t4Topics = new HashSet<>();
+            t4Topics.add("arctic-monkeys");
+            t4Topics.add("maneskin");
+            add(new Tenant("t-4", t4Topics, null, deviceData, null));
             add(new Tenant("t-5", null, null, deviceData, null));
-            add(new Tenant("t-6", Set.of("scorpions"), Set.of("audioslave"), deviceData, null));
+            Set<String> t6Urls = new HashSet<>();
+            t6Urls.add("audioslave");
+            Set<String> t6Topics = new HashSet<>();
+            t6Topics.add("scorpions");
+            add(new Tenant("t-6", t6Topics, t6Urls, deviceData, null));
         }};
 
         for (Tenant tenant : tenants) {

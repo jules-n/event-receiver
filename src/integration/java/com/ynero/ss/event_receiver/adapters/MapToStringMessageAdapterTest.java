@@ -17,11 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -40,16 +40,16 @@ public class MapToStringMessageAdapterTest extends IntegrationTestSetUp {
     @Autowired
     private TenantService tenantService;
 
-    private Map<String, Object> message = Map.of(
-            "deviceId", "8eb8dc69-5e74-4c4c-b05b-4c85af7a86ca",
-            "type", "temperature-read",
-            "temperature", Double.valueOf("27.5"));
+    private Map<String, Object> message = new HashMap<>();
 
     private Tenant tenant;
 
     @BeforeEach
     void setUp() throws Exception {
         var deviceData = new DeviceData("deviceId", "type");
+        message.put("deviceId", "8eb8dc69-5e74-4c4c-b05b-4c85af7a86ca");
+        message.put("type", "temperature-read");
+        message.put("temperature", Double.valueOf("27.5"));
         Set<String> urls = new LinkedHashSet<>();
         Set<String> topics = new LinkedHashSet<>();
         urls.add("audioslave");
