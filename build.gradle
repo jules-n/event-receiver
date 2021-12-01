@@ -58,7 +58,6 @@ dependencies {
     //jedis
     implementation 'redis.clients:jedis:3.7.0'
 
-
     //shared
     implementation 'com.ynero.ss:non-functional-lib:0.0.1'
     implementation 'com.ynero.ss:converters:0.0.1'

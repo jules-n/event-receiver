@@ -11,6 +11,8 @@ spring:
       port: ${REDIS_PORT:6379}
       timeout: ${REDIS_TIMEOUT:6000}
       expiration: ${REDIS_EXPIRATION:600}
+      tolerance: ${REDIS_CONNECTION_IS_TOLERANCE:true}
+      max-downtime: ${REDIS_TOLERANCE_MAX_DOWNTIME:5m}
   cloud:
     stream:
       bindings:
@@ -49,6 +51,3 @@ rest:
     handlers:
       include:
         internal-server-exception: true
-redis:
-  reestablishing: true
-  attempts: 6
