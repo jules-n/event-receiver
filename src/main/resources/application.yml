@@ -51,3 +51,6 @@ rest:
     handlers:
       include:
         internal-server-exception: true
+mongock:
+  change-logs-scan-package:
+    - com.ynero.ss.event_receiver.migration
