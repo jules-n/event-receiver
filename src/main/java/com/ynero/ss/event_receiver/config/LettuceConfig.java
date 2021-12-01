@@ -1,5 +1,6 @@
 package com.ynero.ss.event_receiver.config;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,9 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.Jedis;
 import services.CacheService;
+import services.NoCacheImpl;
 import services.SimpleRedisCacheServiceImpl;
 
 @Configuration
@@ -19,6 +22,7 @@ public class LettuceConfig {
     private final String hostName;
 
     private final int port;
+
 
     public LettuceConfig(@Value("${spring.data.redis.host}") String hostName, @Value("${spring.data.redis.port}") int port) {
         this.hostName = hostName;
@@ -38,6 +42,8 @@ public class LettuceConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(name = {"redis.reestablishing"},
+            havingValue = "false")
     public LettuceConnectionFactory lettuceConnectionFactory() {
         var lettuceConnectionFactory = new LettuceConnectionFactory();
         lettuceConnectionFactory.getStandaloneConfiguration()
@@ -47,7 +53,7 @@ public class LettuceConfig {
         lettuceConnectionFactory.afterPropertiesSet();
         return lettuceConnectionFactory;
     }
-
+  
     @ConditionalOnProperty(
             name = {"spring.data.redis.tolerance"},
             havingValue = "false"

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import services.CacheService;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -104,12 +105,11 @@ public class CacheTenantService implements TenantService {
         return tenantIdWithoutPrefix(tenantId);
     }
 
-    @SneakyThrows
     @Override
     public Optional<Tenant> findByTenantId(String tenantId) {
         Tenant tenant = (Tenant) cache.get(tenantIdWithPrefix(tenantId)).orElse(null);
         if (tenant == null) {
-            tenant = tenantService.findByTenantId(tenantId).get();
+            tenant = tenantService.findByTenantId(tenantId).orElseThrow(() -> new NoSuchElementException("No such tenantId: " + tenantId));
             cache.save(tenantIdWithPrefix(tenantId), tenant, expirationTime, TimeUnit.SECONDS);
         }
         return Optional.of(tenant);
