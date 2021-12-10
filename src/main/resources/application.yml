@@ -3,7 +3,10 @@ tenant-id:
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017}
+      username: ${MONGODB_USERNAME:admin}
+      password: ${MONGODB_PASSWORD:admin}
+      host: ${MONGODB_HOST:localhost}
+      port: ${MONGODB_PORT:27017}
       database: ${MONGODB_DATABASE:event-receiver}
       autoIndexCreation: true
     redis:

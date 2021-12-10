@@ -17,7 +17,10 @@ deployment:
         attribute:
           key: tenant-id
   mongo:
-    uri: mongodb://mongo-0.mongo:27017/
+    username: root
+    host: my-release-mongodb.default.svc.cluster.local
+    port: 27017
+    password: ${sm://mongo-admin-password}
     database: event-receiver
   redis:
     host: 10.133.169.11
@@ -32,7 +35,7 @@ deployment:
   kafka:
     producer:
       bootstrap:
-        server: 10.8.15.224:9092
+        server: 10.60.11.131:9092
 service:
   target:
     port: 9096
